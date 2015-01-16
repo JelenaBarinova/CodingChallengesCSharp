@@ -23,23 +23,27 @@ class Solution
     static void Main(String[] args) 
     {
         var str = Console.ReadLine();
-        var ht = new Hashtable();
-        for (int i = 0; i < str.Length; i++)
+        int R = 'Z' - 'A' + 1;
+        if (str.Length < R)
         {
-            char c = char.ToUpper(str[i]);
-            if (!ht.ContainsKey(c))
-            {
-                ht.Add(c, 1);
-            }
+            Console.WriteLine("not pangram");
         }
-        for (char c = 'A'; c <= 'Z'; c++)
+        else
         {
-            if (!ht.ContainsKey(c))
+            HashSet<char> ht = new HashSet<char>();
+            for (int i = 0; i < str.Length; i++)
             {
+                char c = char.ToUpper(str[i]);
+                if (c >= 'A' && c <= 'Z')
+                {
+                    if (!ht.Contains(c))
+                        ht.Add(c);
+                }
+            }
+            if (ht.Count == R)
+                Console.WriteLine("pangram");
+            else
                 Console.WriteLine("not pangram");
-                return;
-            }
         }
-        Console.WriteLine("pangram");
     }
 }
