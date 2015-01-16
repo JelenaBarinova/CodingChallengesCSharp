@@ -11,7 +11,7 @@ class Solution {
         int res = 0;
         if (line.Length % 2 == 0)
         {
-            var hashMap = new Hashtable();
+            Dictionary<char, int> hashMap = new Dictionary<char, int>();
             var k = line.Length / 2;
             for (int i = 0; i < k; i++)
             {
