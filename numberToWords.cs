@@ -20,9 +20,14 @@ class Solution
     }
     static string numberToWords(Int64 N)
     {
-            var toTwenty = new[] { "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
-            var afterTwenty = new[] { "", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety" };
+            var toTwenty = new[] {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
+            var afterTwenty = new[] {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety" };
             string res = "";
+            if ((N / 1000000000000) > 0)
+            {
+                res += numberToWords(N / 1000000000000) + " Trillion ";
+                N = N % 1000000000000;
+            }
             if ((N / 1000000000) > 0)
             {
                 res += numberToWords(N / 1000000000) + " Billion ";
@@ -38,6 +43,7 @@ class Solution
                 res += numberToWords(N / 1000) + " Thousand ";
                 N = N % 1000;
             }
+
             if ((N / 100) > 0)
             {
                 res += numberToWords(N / 100) + " Hundred ";

@@ -29,14 +29,14 @@ class Solution
             string[] input = Console.ReadLine().Split();
             int l = Int32.Parse(input[0]);
             int b = Int32.Parse(input[1]);
-
+            int res = l * b;
             int m = Math.Min(l, b);
-            int res = Int32.MaxValue;
-            for (int i = 1; i <= m; i++)
+            for (int i = m; i > 0; i--)
             {
                 if (l % i == 0 && b % i == 0)
                 {
-                    res = Math.Min(res, (l / i) * (b / i));
+                    res = (l / i) * (b / i);
+                    break;
                 }
             }
             Console.WriteLine(res);

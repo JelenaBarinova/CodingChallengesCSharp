@@ -6,23 +6,29 @@ class Solution
     static void Main(String[] args) 
     {
        var T = Int32.Parse(Console.ReadLine());
-       
+       var factorialbyDigit = new Dictionary<int, int>(); 
+       for (int i = 0; i <= 9; i++)
+       {
+            factorialbyDigit.Add(i, Factorial(i));
+       }
+
+       int t_sum = 0;
        for (int i = 11; i <= T; i++)
        {
             int d = i;
             int f_sum = 0;
             while (d > 0)
             {
-                f_sum += Factorial(d % 10); 
+                f_sum += factorialbyDigit[d % 10]; 
                 d = d / 10;
             }
 
             if (f_sum % i == 0)
             {
-                Console.WriteLine(i);
+                t_sum += i;
             }
        }
-
+       Console.WriteLine(t_sum);
     }
     
     static int Factorial(int x)
@@ -40,14 +46,4 @@ class Solution
             return x * Factorial(x - 1);
         }
     }
-    /*
-    static int Factorial(int x)
-    {
-        int result = x < 0 ? -1 : x == 0 || x == 1 ? 1 : 1;
-        if (x > 0)
-        {
-            Enumerable.Range(1, x).ToList<int>().ForEach(element => result = result * element);
-        }
-        return result;
-    }*/
 }

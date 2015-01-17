@@ -20,30 +20,28 @@ using System.Collections.Generic;
 using System.IO;
 class Solution 
 {
+    const int R = 'Z' - 'A' + 1;
+
     static void Main(String[] args) 
     {
         var str = Console.ReadLine();
-        int R = 'Z' - 'A' + 1;
         if (str.Length < R)
         {
             Console.WriteLine("not pangram");
         }
         else
         {
-            HashSet<char> ht = new HashSet<char>();
+            HashSet<char> letters = new HashSet<char>();
             for (int i = 0; i < str.Length; i++)
             {
                 char c = char.ToUpper(str[i]);
-                if (c >= 'A' && c <= 'Z')
+                if (c >= 'A' && c <= 'Z' && !letters.Contains(c))
                 {
-                    if (!ht.Contains(c))
-                        ht.Add(c);
+                    letters.Add(c);
                 }
             }
-            if (ht.Count == R)
-                Console.WriteLine("pangram");
-            else
-                Console.WriteLine("not pangram");
+
+            Console.WriteLine(letters.Count == R ? "pangram" : "not pangram");
         }
     }
 }

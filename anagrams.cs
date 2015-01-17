@@ -11,31 +11,34 @@ class Solution {
         int res = 0;
         if (line.Length % 2 == 0)
         {
-            Dictionary<char, int> hashMap = new Dictionary<char, int>();
+            Dictionary<char, int> countByLetter = new Dictionary<char, int>();
             var k = line.Length / 2;
             for (int i = 0; i < k; i++)
             {
-                if (!hashMap.ContainsKey(line[i]))
+                char letter = line[i];
+                if (!countByLetter.ContainsKey(letter))
                 {
-                    hashMap.Add(line[i], 1);
+                    countByLetter.Add(letter, 1);
                 }
                 else
                 {
-                    hashMap[line[i]] = (int)hashMap[line[i]] + 1;    
+                    countByLetter[letter] = countByLetter[letter] + 1;    
                 }
             }
+
             for (int i = k; i < line.Length; i++)
             {
-                if (!hashMap.ContainsKey(line[i]))
+                char letter = line[i];
+                if (!countByLetter.ContainsKey(letter))
                 {
                     res++;    
                 }
                 else
                 {
-                    hashMap[line[i]] = (int)hashMap[line[i]] - 1;
-                    if ((int)hashMap[line[i]] == 0) 
+                    countByLetter[letter] = countByLetter[letter] - 1;
+                    if (countByLetter[letter] == 0) 
                     {
-                        hashMap.Remove(line[i]);
+                        countByLetter.Remove(letter);
                     }
                 }
             }
