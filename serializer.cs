@@ -7,19 +7,19 @@ using System.Collections.Generic;
 using System.IO;
 class Solution 
 {
+    const int maxWordLength = 10; //max word lenght
     static void Main()
     {
         
-        string[] strings = {"AAA", "BB", "CCCC"};
+        string[] strings = {"AAA", "BB", "CCCC", "MNAxjdv"};
 
         Console.WriteLine("Given vector: ");
         foreach(string item in strings)
             Console.Write(item.ToString() + " ");        
         
-        byte[][] serialized = Serialize(strings);
+        byte[] serialized = Serialize(strings);
 
-        Console.WriteLine("\nSerialized: ");
-        Console.WriteLine(BytesToString(serialized));
+        Console.WriteLine("\nSerialized: {0}", BitConverter.ToString(serialized));
 
         string[] deserialized = Deserialize(serialized);
 
@@ -29,54 +29,46 @@ class Solution
         Console.WriteLine();
     }
 
-    static byte[][] Serialize(string[] strings)
+    static byte[] Serialize(string[] strings)
     {
         int n = strings.Length;
-
-        byte[][] serialized = new byte[n * 2][];
+        byte[] serialized = new byte[n * (maxWordLength + 4)];
 
         int j = 0;
         for (int i = 0 ; i < n; i++)
         {
-            string s = strings[i];
+            string word = strings[i];
 
-            serialized[j] = BitConverter.GetBytes(s.Length);
-            j++;
-            serialized[j] = new byte[s.Length];
+            byte[] wordLength = BitConverter.GetBytes(word.Length); //letter count
+            for (int k = 0; k < wordLength.Length; k++)
+                serialized[j++] = wordLength[k];
             
-            serialized[j++] = System.Text.Encoding.UTF8.GetBytes(s);  
-
+            byte[] wordInBytes = System.Text.Encoding.UTF8.GetBytes(word); //letters to byte[]
+            for (int k = 0; k < wordInBytes.Length; k++)
+                serialized[j++] = wordInBytes[k];
         }
         return serialized;
     }
 
-    static string[] Deserialize(byte[][] bytes)
+    static string[] Deserialize(byte[] bytes)
     {
         var n = bytes.Length;
-
-        string[] strings = new string[n / 2];
+        string[] strings = new string[n / (4 + maxWordLength)];
         
-        for (int i = 0; i < n; i += 2)
+        int i = 0, k = 0;
+        while (i < n)
         {
-            //int size = BitConverter.ToInt32(bytes[i], 0);
-            string word = "";
-            
-            byte[] wordInBytes = bytes[i + 1];
-            word = System.Text.Encoding.UTF8.GetString(wordInBytes);
-            Console.WriteLine("adding word = {0} into vector at {1}", word, i / 2);
-            strings[i / 2] = word;
-        }
+            int size = BitConverter.ToInt32(bytes, i);
+            if (size == 0) break;
+            i += 4;
 
+            byte[] wordInBytes = new byte[size];
+            for (int j = 0; j < size; j++)
+                wordInBytes[j] = bytes[i++];
+ 
+            strings[k++] = System.Text.Encoding.UTF8.GetString(wordInBytes);
+        }
+        
         return strings;
-    }
-
-    static string BytesToString(byte[][] bytes)
-    {
-        var strBulder = new System.Text.StringBuilder();
-        foreach (byte[] word in bytes)
-        {
-            strBulder.Append((BitConverter.ToString(word) + " "));
-        }
-        return strBulder.ToString();
     }
 }
