@@ -15,20 +15,63 @@ class Solution
         var str2 = Console.ReadLine();
         Console.WriteLine(IsRotation(str1, str2));
     }
+
     static bool IsRotation(string str1, string str2) 
     {
-        var n = str1.Length;
-        if (n != str2.Length) return false;
+        if (str1.Length != str2.Length) return false;
+        
+        string s = str1 + str2;
+        int[] t = BuildKmpTable(str2);
 
-        //find the beginning of the first string in second string
-        var i = 0;
-        while (i < n && str1[0] != str2[i]) i++;
+        int i = 0, j = 0;
+        while (s[i] != str2[0]) i++; 
+        
+        while (i < s.Length && j < str2.Length)
+        {        
+            if (s[i] == str2[j])
+            {
+                i++;
+                j++;
+            } 
+            else
+            {
+                i -= t[j];
+                j = t[j];
+            }
+            if (j == str2.Length) 
+                return true;
+        }
+        return false;
+    }
 
-        if (i == n) return false;
+    static int[] BuildKmpTable(string word)
+    {
+        int[] t = new int[word.Length];
+        t[0] = -1;
+        t[1] = 0;
+        int p = 2, c = 0;
 
-        //iterate through first string and compare to cycled second
-        for (int j = 0; j < n; j++) if (str1[j] != str2[(j + i) % n]) return false; 
-
-        return true;
+        while (p < word.Length)
+        {
+            //we have a countinuous pattern match
+            if (word[p - 1] == word[c])
+            {
+                c++;
+                t[p] = c;
+                p++;
+            }
+            //if no match, but we were comparint not to the first letter in prefix
+            else if (c > 0)
+            {
+                c = t[c];
+            }
+            //no match, move on
+            else
+            {
+                t[p] = 0;
+                p++;
+            }
+        }
+        return t;
     }
 }
