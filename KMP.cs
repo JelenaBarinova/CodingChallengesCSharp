@@ -72,7 +72,7 @@ class Solution
             //we have run out of candidates.  Note c = 0
             else
             {
-                arr[c] = 0;
+                arr[p] = 0;
                 p++;
             }
         }
