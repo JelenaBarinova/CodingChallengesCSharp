@@ -33,7 +33,7 @@ class Solution
         var k = Int32.Parse(input.Split(' ')[1]);
         
         var premutationSet = new Dictionary<string, HashSet<int>>(n);
-        for (int i = 1000; i <= n; i++)
+        for (int i = 0; i <= n; i++)
         {
             char[] cubeChars = ((double)Math.Pow(i, 3)).ToString().ToCharArray();
             Array.Sort(cubeChars);
